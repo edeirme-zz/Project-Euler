@@ -10,7 +10,7 @@ for x in range(100,999):
              s2=s[(len(str(x*y))/2):]
              #reverse the string
              s3=s2[::-1]
-             #check for equality
+             #check for equality#
              if s1==s3:
                  #set max palindrome number
                  if (int(s1+s2))>=maxi:
