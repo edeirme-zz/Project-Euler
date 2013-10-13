@@ -1,4 +1,17 @@
-grid="""08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
+#What is the greatest product of four adjacent numbers
+#in the same direction (up, down, left, right, or diagonally) in the 20x20 grid?
+#First we create a function to transform  the text into a two-dimension array
+def transformintoarray(x):
+    #Spliting the lines
+    Array = {}
+    for line_num in range(20):
+        line = grid.splitlines()[line_num]
+        for digit in range(20): #Splitting the digits by omitting the blank spaces
+            Array[line_num] = line.split(' ')
+    return Array
+#Main function
+if __name__ == '__main__':
+    grid="""08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
 81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
 52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91
@@ -19,47 +32,32 @@ grid="""08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
 
-lala= grid.splitlines()[2]
-lili=lala.split(' ')
-lone={}
-max=0
-for linenum in range(20):
-    line= grid.splitlines()[linenum]
-    for digit in range(20):
-        lone[linenum]=line.split(' ')
-#Check Right
-for i in range(20):
-    for j in range(17):
-        if len(lone[i][j+3])<=len(lone[i][19]):
-            temp=int(lone[i][j])*int(lone[i][j+1])*int(lone[i][j+2])*int(lone[i][j+3])
+    array=transformintoarray(grid)
+    max=0
+#Check Right (Left side is not needed because it has the same outcome as this function)
+    for i in range(20):
+        for j in range(17):
+            if len(array[i][j+3])<=len(array[i][19]):
+                temp=int(array[i][j])*int(array[i][j+1])*int(array[i][j+2])*int(array[i][j+3])
+                if temp>=max:
+                    max=temp
+#Check Up (Checking Downwards isn't needed because it has the same outcome as the upward method)
+    for i in range(19,2,-1):
+        for j in range(20):
+            temp=int(array[i][j])*int(array[i-1][j])*int(array[i-2][j])*int(array[i-3][j])
             if temp>=max:
                 max=temp
-#Check Left
-for i in range(3,20):
-    for j in range(20):
-        temp=int(lone[i][j])*int(lone[i][j-1])*int(lone[i][j-2])*int(lone[i][j-3])
-        if temp>=max:
-            max=temp
-#Check Down
-for i in range(17):
-    for j in range(20):
-        temp=int(lone[i][j])*int(lone[i+1][j])*int(lone[i+2][j])*int(lone[i+3][j])
-        if temp>=max:
-            max=temp
-#Check Up
-for i in range(19,2,-1):
-    for j in range(20):
-        temp=int(lone[i][j])*int(lone[i-1][j])*int(lone[i-2][j])*int(lone[i-3][j])
-        if temp>=max:
-            print( lone[i][j]+lone[i-1][j]+lone[i-2][j]+lone[i-3][j])
-            max=temp
 #Check Diagonally (Down+right)
-for i in range(17):
-    for j in range(17):
-        temp=int(lone[i][j])*int(lone[i+1][j+1])*int(lone[i+2][j+2])*int(lone[i+3][j+3])
-
-        if temp>=max:
-            print lone[i][j]+lone[i+1][j+1]+lone[i+2][j+2]+lone[i+3][j+3]
-            max=temp
-
-print max
+    for i in range(17):
+        for j in range(17):
+            temp=int(array[i][j])*int(array[i+1][j+1])*int(array[i+2][j+2])*int(array[i+3][j+3])
+            if temp>=max:
+                max=temp
+#Check Diagonally (Down+left)
+    for i in range(17):
+        for j in range(19,2,-1):
+            temp=int(array[i][j])*int(array[i+1][j-1])*int(array[i+2][j-2])*int(array[i+3][j-3])
+            if temp>=max:
+                max=temp
+    print "The result is: "+ str(max)
+    
